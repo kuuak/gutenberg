@@ -508,7 +508,12 @@ function BlockListBlock( {
 					// of the appropriate parent.
 					<ChildToolbarSlot />
 				) }
-				{ ( shouldShowBreadcrumb || shouldShowContextualToolbar || isForcingContextualToolbar.current ) && (
+				{ (
+					showEmptyBlockSideInserter ||
+					shouldShowBreadcrumb ||
+					shouldShowContextualToolbar ||
+					isForcingContextualToolbar.current
+				) && (
 					<Popover
 						noArrow
 						animate={ false }
@@ -541,6 +546,16 @@ function BlockListBlock( {
 								data-align={ wrapperProps ? wrapperProps[ 'data-align' ] : undefined }
 							/>
 						) }
+						{ showEmptyBlockSideInserter && (
+							<div className="block-editor-block-list__empty-block-inserter">
+								<Inserter
+									position="top right"
+									onToggle={ selectOnOpen }
+									rootClientId={ rootClientId }
+									clientId={ clientId }
+								/>
+							</div>
+						) }
 					</Popover>
 				) }
 				<IgnoreNestedEvents
@@ -568,16 +583,6 @@ function BlockListBlock( {
 					{ !! hasError && <BlockCrashWarning /> }
 				</IgnoreNestedEvents>
 			</div>
-			{ showEmptyBlockSideInserter && (
-				<div className="block-editor-block-list__empty-block-inserter">
-					<Inserter
-						position="top right"
-						onToggle={ selectOnOpen }
-						rootClientId={ rootClientId }
-						clientId={ clientId }
-					/>
-				</div>
-			) }
 		</IgnoreNestedEvents>
 	);
 }
