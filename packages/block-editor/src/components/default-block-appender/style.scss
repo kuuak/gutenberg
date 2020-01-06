@@ -89,8 +89,6 @@
 	@include break-small {
 		display: flex;
 		height: 100%;
-		left: -$block-side-ui-width - $block-padding - $block-side-ui-clearance;
-		right: auto;
 	}
 
 	&:disabled {
