@@ -370,7 +370,7 @@
 	.block-editor-block-list__layout {
 		.block-editor-default-block-appender .block-editor-inserter {
 			left: auto;
-			right: $grid-size;
+			right: $grid-size * 2;
 		}
 	}
 }
@@ -604,7 +604,7 @@
 	z-index: z-index(".block-editor-block-list__block-popover");
 
 	.components-popover__content {
-		margin-left: 0 !important;
+		margin: 0 !important;
 		min-width: auto;
 		background: none;
 		border: none;

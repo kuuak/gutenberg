@@ -520,7 +520,7 @@ function BlockListBlock( {
 						// Position above the anchor, pop out towards the right,
 						// and position in the left corner.
 						// To do: refactor `Popover` to make this prop clearer.
-						position="top right left"
+						position={ showEmptyBlockSideInserter && rootClientId ? 'top left right' : 'top right left' }
 						focusOnMount={ false }
 						anchorRef={ blockNodeRef.current }
 						className="block-editor-block-list__block-popover"
