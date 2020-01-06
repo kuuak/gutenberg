@@ -468,6 +468,13 @@ function BlockListBlock( {
 		/>
 	);
 
+	// Position above the anchor, pop out towards the right, and position in the
+	// left corner. For the side inserter, pop out towards the left, and
+	// position in the right corner.
+	// To do: refactor `Popover` to make this prop clearer.
+	const popoverPosition = showEmptyBlockSideInserter ? 'top left right' : 'top right left';
+	const popoverIsSticky = isPartOfMultiSelection ? '.wp-block.is-multi-selected' : true;
+
 	return (
 		<IgnoreNestedEvents
 			id={ blockElementId }
@@ -517,14 +524,11 @@ function BlockListBlock( {
 					<Popover
 						noArrow
 						animate={ false }
-						// Position above the anchor, pop out towards the right,
-						// and position in the left corner.
-						// To do: refactor `Popover` to make this prop clearer.
-						position={ showEmptyBlockSideInserter ? 'top left right' : 'top right left' }
+						position={ popoverPosition }
 						focusOnMount={ false }
 						anchorRef={ blockNodeRef.current }
 						className="block-editor-block-list__block-popover"
-						__unstableSticky={ isPartOfMultiSelection ? '.wp-block.is-multi-selected' : true }
+						__unstableSticky={ showEmptyBlockSideInserter ? false : popoverIsSticky }
 						__unstableSlotName="block-toolbar"
 						// Allow subpixel positioning for the block movement animation.
 						__unstableAllowVerticalSubpixelPosition={ moverDirection !== 'horizontal' && wrapper.current }
