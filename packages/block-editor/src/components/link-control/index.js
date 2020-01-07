@@ -49,10 +49,12 @@ function LinkControl( {
 	instanceId,
 	onClose = noop,
 	onChange = noop,
+	popoverProps,
 } ) {
 	// State
 	const [ inputValue, setInputValue ] = useState( '' );
 	const [ isEditingLink, setIsEditingLink ] = useState( ! value || ! value.url );
+	const displayURL = filterURLForDisplay( safeDecodeURI( value.url ) ) || '';
 
 	// Handlers
 
@@ -78,8 +80,8 @@ function LinkControl( {
 
 		// Populate input searcher whether
 		// the current link has a title.
-		if ( value && value.title && mode === 'edit' ) {
-			setInputValue( value.title );
+		if ( value && value.url && mode === 'edit' ) {
+			setInputValue( value.url );
 		}
 	};
 
@@ -181,6 +183,7 @@ function LinkControl( {
 			onClose={ closeLinkUI }
 			position="bottom center"
 			focusOnMount="firstElement"
+			{ ...popoverProps }
 		>
 			<div className="block-editor-link-control__popover-inner">
 				<div className="block-editor-link-control__search">
@@ -202,9 +205,9 @@ function LinkControl( {
 										className="block-editor-link-control__search-item-title"
 										href={ value.url }
 									>
-										{ value.title }
+										{ value.title || displayURL }
 									</ExternalLink>
-									<span className="block-editor-link-control__search-item-info">{ filterURLForDisplay( safeDecodeURI( value.url ) ) || '' }</span>
+									{ value.title && <span className="block-editor-link-control__search-item-info">{ displayURL }</span> }
 								</span>
 
 								<Button isSecondary onClick={ setMode( MODE_EDIT ) } className="block-editor-link-control__search-item-action block-editor-link-control__search-item-action--edit">
