@@ -95,9 +95,19 @@ function BlockList( {
 				return blockEl.offsetTop > offset;
 			} );
 
+			if ( ! afterIndex ) {
+				return;
+			}
+
+			const clientId = afterIndex.id.slice( 'block-'.length );
+
+			if ( ! clientId ) {
+				return;
+			}
+
 			setIsInserterShown( true );
 			setInserterPosition( afterIndex );
-			setInserterClientId( afterIndex.id.slice( 'block-'.length ) );
+			setInserterClientId( clientId );
 		} else {
 			setIsInserterShown( false );
 		}
