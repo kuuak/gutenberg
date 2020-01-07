@@ -49,6 +49,7 @@ function LinkControl( {
 	instanceId,
 	onClose = noop,
 	onChange = noop,
+	manualSearch,
 } ) {
 	// State
 	const [ inputValue, setInputValue ] = useState( '' );
@@ -225,6 +226,7 @@ function LinkControl( {
 							renderSuggestions={ renderSearchResults }
 							fetchSuggestions={ getSearchHandler }
 							onReset={ resetInput }
+							manualSearch={ manualSearch }
 						/>
 					) }
 
