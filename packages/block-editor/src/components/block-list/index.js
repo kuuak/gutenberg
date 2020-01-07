@@ -6,8 +6,9 @@ import classnames from 'classnames';
 /**
  * WordPress dependencies
  */
-import { useRef } from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 import { AsyncModeProvider, useSelect } from '@wordpress/data';
+import { Popover } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -16,6 +17,7 @@ import BlockListBlock from './block';
 import BlockListAppender from '../block-list-appender';
 import __experimentalBlockListFooter from '../block-list-footer';
 import useMultiSelection from './use-multi-selection';
+import Inserter from '../inserter';
 
 /**
  * If the block count exceeds the threshold, we disable the reordering animation
@@ -80,13 +82,63 @@ function BlockList( {
 		...__experimentalUIParts,
 	};
 
-	return (
+	const [ isInserterShown, setIsInserterShown ] = useState( false );
+	const [ isInserterForced, setIsInserterForced ] = useState( false );
+	const [ inserterPosition, setInserterPosition ] = useState( null );
+	const [ inserterClientId, setInserterClientId ] = useState( null );
+
+	function onMouseMove( event ) {
+		if ( event.target === ref.current ) {
+			const rect = event.target.getBoundingClientRect();
+			const offset = event.clientY - rect.top;
+			const afterIndex = Array.from( event.target.children ).find( ( blockEl ) => {
+				return blockEl.offsetTop > offset;
+			} );
+
+			setIsInserterShown( true );
+			setInserterPosition( afterIndex );
+			setInserterClientId( afterIndex.id.slice( 'block-'.length ) );
+		} else {
+			setIsInserterShown( false );
+		}
+	}
+
+	return <>
+		{ ( isInserterShown || isInserterForced ) &&
+			<Popover
+				noArrow
+				animate={ false }
+				anchorRef={ inserterPosition }
+				position="top right left"
+				focusOnMount={ false }
+				className="block-editor-block-list__block-popover"
+				__unstableSlotName="block-toolbar"
+			>
+				<div
+					onFocus={ () => setIsInserterForced( true ) }
+					onBlur={ () => setIsInserterForced( false ) }
+					// While ideally it would be enough to capture the
+					// bubbling focus event from the Inserter, due to the
+					// characteristics of click focusing of `button`s in
+					// Firefox and Safari, it is not reliable.
+					//
+					// See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
+					tabIndex={ -1 }
+				>
+					<Inserter
+						rootClientId={ rootClientId }
+						clientId={ inserterClientId }
+					/>
+				</div>
+			</Popover>
+		}
 		<div
 			ref={ ref }
 			className={ classnames(
 				'block-editor-block-list__layout',
 				className
 			) }
+			onMouseMove={ isInserterForced ? undefined : onMouseMove }
 		>
 			{ blockClientIds.map( ( clientId, index ) => {
 				const isBlockInSelection = hasMultiSelection ?
@@ -119,7 +171,7 @@ function BlockList( {
 			/>
 			<__experimentalBlockListFooter.Slot />
 		</div>
-	);
+	</>;
 }
 
 // This component needs to always be synchronous

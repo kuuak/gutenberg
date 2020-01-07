@@ -44,7 +44,6 @@ import BlockCrashBoundary from './block-crash-boundary';
 import BlockHtml from './block-html';
 import BlockBreadcrumb from './breadcrumb';
 import BlockContextualToolbar from './block-contextual-toolbar';
-import BlockInsertionPoint from './insertion-point';
 import IgnoreNestedEvents from '../ignore-nested-events';
 import Inserter from '../inserter';
 import { isInsideRootBlock } from '../../utils/dom';
@@ -491,12 +490,6 @@ function BlockListBlock( {
 					animationStyle
 			}
 		>
-			{ shouldShowInsertionPoint && (
-				<BlockInsertionPoint
-					clientId={ clientId }
-					rootClientId={ rootClientId }
-				/>
-			) }
 			{ shouldRenderDropzone && <BlockDropZone
 				clientId={ clientId }
 				rootClientId={ rootClientId }
