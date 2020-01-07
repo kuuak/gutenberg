@@ -160,7 +160,7 @@ function NavigationLinkEdit( {
 						<LinkControl
 							className="wp-block-navigation-link__inline-link-input"
 							value={ link }
-							manualSearch={ () => {
+							initialSuggestions={ () => {
 								return Promise.resolve( [ {
 									id: '-1',
 									title: 'Manual result',
