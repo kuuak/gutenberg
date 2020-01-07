@@ -17,7 +17,7 @@ import BlockListBlock from './block';
 import BlockListAppender from '../block-list-appender';
 import __experimentalBlockListFooter from '../block-list-footer';
 import useMultiSelection from './use-multi-selection';
-import Inserter from '../inserter';
+import BlockInsertionPoint from './insertion-point';
 
 /**
  * If the block count exceeds the threshold, we disable the reordering animation
@@ -114,22 +114,13 @@ function BlockList( {
 				className="block-editor-block-list__block-popover"
 				__unstableSlotName="block-toolbar"
 			>
-				<div
+				<BlockInsertionPoint
+					rootClientId={ rootClientId }
+					clientId={ inserterClientId }
 					onFocus={ () => setIsInserterForced( true ) }
 					onBlur={ () => setIsInserterForced( false ) }
-					// While ideally it would be enough to capture the
-					// bubbling focus event from the Inserter, due to the
-					// characteristics of click focusing of `button`s in
-					// Firefox and Safari, it is not reliable.
-					//
-					// See: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
-					tabIndex={ -1 }
-				>
-					<Inserter
-						rootClientId={ rootClientId }
-						clientId={ inserterClientId }
-					/>
-				</div>
+					width={ inserterPosition.offsetWidth }
+				/>
 			</Popover>
 		}
 		<div
